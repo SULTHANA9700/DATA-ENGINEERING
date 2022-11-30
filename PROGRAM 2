@@ -1,0 +1,68 @@
+Write a C program to calculate the correlation coefficient. Use the following data to check
+your code.
+Suppose a hospital tested the age and body fat data for 18 randomly selected adults with
+the following result:
+
+Are these two variables positively or negatively correlated?
+
+source code:
+#include<stdio.h>
+#include<math.h>
+float mean(float a[],int n){
+        float s=0;
+        for(int i=0;i<n;i++){
+                s=s+a[i];
+        }
+        return s/n;
+}
+float std(float a[],int n){
+        float xbar=mean(a,n),result,p=0;
+        for(int i=0;i<n;i++){
+                p=p+pow((a[i]-xbar),2);
+        }
+        if(n<30){
+                n=n-1;
+        }
+        result=sqrt(p/n);
+        return result;
+}
+float cov(float a[],float b[],int n){
+        float p=0,result;
+        for(int i=0;i<n;i++){
+                p=p+(a[i]*b[i]);
+        }
+        p=p/n;
+        result=p-(mean(a,n)*mean(b,n));
+        return result;
+}
+void main(){
+        int n=18,i;
+        /**printf("enter number of persons");
+        scanf("%d",&n);
+        printf("enter ages");**/
+        //float a[n],b[n];
+        /**for(i=0;i<n;i++){
+                scanf("%f",&a[i]);
+        }
+        printf("\nenter fat percentage");
+        for(i=0;i<n;i++){
+                scanf("%f",&b[i]);
+        }**/
+        float a[18]={23,23,27,27,39,41,47,49,50,52,54,54,56,57,58,58,60,61};
+        float b[18]={9.5,26.5,7.8,17.8,31.4,25.9,27.4,27.2,31.2,34.6,42.5,28.8,33.4,30.2,34.1,32.9,41.2,35.7};
+        printf("\ncovariance :");
+        printf("%f",cov(a,b,n));
+        float r=cov(a,b,n)/(std(a,n)*std(b,n));
+        printf("\ncorrelation coefficient :%f ",r);
+        if(r>=0){
+            printf("\nPositive correlation");
+        }
+        else{
+            printf("\nNegative correlation");
+        }
+}
+
+output:
+covariance :94.463013
+correlation coefficient :0.772196
+Positive correlation
