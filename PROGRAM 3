@@ -1,0 +1,140 @@
+Suppose that the data for analysis includes the attribute age. The age values for the data tuples are (in increasing order) 13, 15, 16, 16, 19, 20, 20, 21, 22, 22, 25, 25, 25, 25, 30, 33, 33, 35, 35, 35, 35, 36, 40, 45, 46, 52, 70. Write a C program to implement smoothing by bin means to smooth the data, using a bin depth of 3 
+
+source code:
+#include<stdio.h>
+float mean(int a[],int n){
+    int s=0;
+    for(int i=0;i<n;i++){
+        s=s+a[i];
+    }
+    return s/n;
+}
+void sort(int a[],int n){
+    //sorting the elements in the array by using bubble sort technique
+    int temp=0;
+    float result;
+    for(int i=0;i<n;i++){
+        for(int j=i+1;j<n;j++){
+            if(a[i]>a[j]){
+                temp=a[i];
+                a[i]=a[j];
+            }
+        }
+    }
+}
+float median(int a[],int n){
+    //calling the sort function
+    sort(a,n);
+    float result;
+    //calculating median
+    if(n%2==0){
+        result=(a[n/2]+a[(n/2)-1])/2;
+    }
+    else{
+        result=a[(n-1)/2];
+    }
+    return result;
+}
+void smoothing_by_bin_means(int a[],int n,int d){
+    int b[d],i,j;
+    float m;
+    for(i=0;i<n;i=i+d){
+        for(j=0;j<d;j++){
+            b[j]=a[i+j];
+        }
+        m=mean(b,d);
+        for(j=0;j<d;j++){
+            a[i+j]=m;
+        }
+    }
+}
+void smoothing_by_bin_median(int a[],int n,int d){
+    int b[d],i,j;
+    float m;
+    for(i=0;i<n;i=i+d){
+        for(j=0;j<d;j++){
+            b[j]=a[i+j];
+        }
+        m=median(b,d);
+        for(j=0;j<d;j++){
+            a[i+j]=m;
+        }
+    }
+}
+void smoothing_by_bin_boundary(int a[],int n,int d){
+    int b[d],i,j;
+    float m;
+    for(i=0;i<n;i=i+d){
+        for(j=0;j<d;j++){
+            b[j]=a[i+j];
+        }
+        for(j=0;j<d;j++){
+            if((b[j]-b[0])<(b[d-1]-b[j])){
+                m=b[0];
+            }
+            else{
+                m=b[d-1];
+            }
+            a[i+j]=m;
+        }
+    }
+}
+void main(){
+    int n,i,j,d,choice;
+    /**printf("enter no. of elements");
+    scanf("%d",&n);
+    int a[n];
+    printf("enter elements");
+    for(i=0;i<n;i++){
+        scanf("%d",&a[i]);
+    }
+    printf("enter depth");
+    scanf("%d",&d);
+    **/
+    int a[27]={13, 15, 16, 16, 19, 20, 20, 21, 22, 22, 25,25, 25, 25, 30, 33, 33, 35, 35, 35, 35, 36, 40, 45, 46, 52, 70};
+    n=27;
+    d=3;
+    printf("enter choice\n 1.smoothing by bin means\n 2.smoothing by bin median\n 3.smoothing by bin boundaries\n");
+    scanf("%d",&choice);
+    switch(choice){
+        case 1:smoothing_by_bin_means(a,n,d);
+        break;
+        case 2:smoothing_by_bin_median(a,n,d);
+        break;
+        case 3:smoothing_by_bin_boundary(a,n,d);
+        break;
+        default:printf("enter correct choice");
+    }
+    printf("\nelements are");
+    for(i=0;i<n;i++){
+    printf("%d ",a[i]);
+    }
+}
+
+output 1:
+enter choice
+ 1.smoothing by bin means
+ 2.smoothing by bin median
+ 3.smoothing by bin boundaries
+1
+
+elements are 14 14 14 18 18 18 21 21 21 24 24 24 26 26 26 33 33 33 35 35 35 40 40 40 56 56 56
+
+output 2:
+enter choice
+ 1.smoothing by bin means
+ 2.smoothing by bin median
+ 3.smoothing by bin boundaries
+2
+
+elements are 15 15 15 19 19 19 21 21 21 25 25 25 25 25 25 33 33 33 35 35 35 40 40 40 52 52 52
+
+output 3:
+enter choice
+ 1.smoothing by bin means
+ 2.smoothing by bin median
+ 3.smoothing by bin boundaries
+3
+
+elements are 13 16 16 16 20 20 20 22 22 22 25 25 25 25 30 33 33 35 35 35 35 36 36 45 46 46 70
+    
